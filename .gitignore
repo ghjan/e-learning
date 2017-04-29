@@ -8,3 +8,4 @@ config_celery.py
 *.sqlite3
 prepare/*
 educa/static/*
+educa/*/migrations/*
