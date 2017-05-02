@@ -35,7 +35,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'embed_video',
     'courses',
+    'students',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,6 +50,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'educa.urls'
@@ -98,6 +102,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 from django.core.urlresolvers import reverse_lazy
 
-# LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+INTERNAL_IPS = '127.0.0.1'
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': "http://code.jquery.com/jquery-2.1.1.min.js"
+}
