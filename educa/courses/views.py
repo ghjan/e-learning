@@ -14,6 +14,8 @@ from django.forms.models import modelform_factory
 from django.apps import apps
 from .models import Module, Content
 
+from django.core.cache import cache
+
 
 class OwnerMixin(LoginRequiredMixin, object):
     def get_queryset(self):
@@ -196,13 +198,28 @@ class CourseListView(TemplateResponseMixin, View):
     template_name = 'courses/course/list.html'
 
     def get(self, request, subject=None):
-        subjects = Subject.objects.annotate(
-            total_courses=Count('courses'))
-        courses = Course.objects.annotate(
+        subjects = cache.get('all_subjects')
+        if not subjects:
+            subjects = Subject.objects.annotate(
+                total_courses=Count('courses'))
+            cache.set('all_subjects', subjects)
+        else:
+            print("cache kiss!!!")
+        all_courses = Course.objects.annotate(
             total_modules=Count('modules'))
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
+            key = 'subject_{}_courses'.format(subject.id)
+            courses = cache.get(key)
+            if not courses:
+                courses = all_courses.filter(subject=subject)
+                cache.set(key, courses)
             courses = courses.filter(subject=subject)
+        else:
+            courses = cache.get('all_courses')
+            if not courses:
+                courses = all_courses
+                cache.set('all_courses', courses)
         return self.render_to_response({'subjects': subjects,
                                         'subject': subject,
                                         'courses': courses})
@@ -210,6 +227,7 @@ class CourseListView(TemplateResponseMixin, View):
 
 from django.views.generic.detail import DetailView
 from students.forms import CourseEnrollForm
+
 
 class CourseDetailView(DetailView):
     model = Course

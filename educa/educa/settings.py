@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'embed_video',
+    'memcache_status',
     'courses',
     'students',
 )
@@ -114,3 +115,8 @@ INTERNAL_IPS = '127.0.0.1'
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': "http://code.jquery.com/jquery-2.1.1.min.js"
 }
+
+try:
+    from .config_cache import *
+except:
+    pass
