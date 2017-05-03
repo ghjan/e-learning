@@ -1,2 +1,5 @@
 Django==1.9.13
 Pillow==2.9.0
+django-braces
+django-embed-video
+django_memcache_status
