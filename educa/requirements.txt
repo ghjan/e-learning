@@ -3,3 +3,4 @@ Pillow==2.9.0
 django-braces
 django-embed-video
 django_memcache_status
+djangorestframework

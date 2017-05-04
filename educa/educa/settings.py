@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'embed_video',
     'memcache_status',
+    'rest_framework',
     'courses',
     'students',
 )
@@ -113,6 +114,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 INTERNAL_IPS = '127.0.0.1'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+    # ,DEFAULT_AUTHENTICATION_CLASSES
+}
 
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': "http://code.jquery.com/jquery-2.1.1.min.js"
